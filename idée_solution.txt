@@ -1,0 +1,23 @@
+Idée de solution pour le projet graphe:
+- créer le graphe à partir de la liste des arêtes.
+- pour chaque sommet, lister tous ses voisins. 
+- Prendre le sommet avec le plus grand degré puis ajouter les arêtes nécessaires pour
+créer une clique avec tous ses voisins. (mettre les nouvelles arêtes dans une liste)
+- supprimer les arêtes qui n'appartiennent pas à la clique et supprimer les sommets de la clique
+de la liste des sommets du graphe. (mettre les arêtes supprimées dans une liste)
+- Recommencer avec le sommet de plus grand degré qui est encore dans la liste des sommets du graphe
+- A la fin: 
+	-tester si on a un ensemble de cliques.
+	-retourner (avec juste un print) la liste des arêtes ajoutées et supprimées.
+
+Structure de données pour le graphe:
+un dictionnaire de listes.
+Chaque clé correspond à un sommet et sa valeur est la liste de ses voisins.
+
+Créer une fonction qui génère le graphe sous forme d'un dictionnaire.
+Créer une fonction qui ajoute une arête dans le graphe (donc pour les deux sommets concernés,
+ajouter le voisin correspondant)
+Créer une fonction qui supprime une arête dans le graphe (donc pour les deux sommets concernés,
+supprimer le voisin correspondant)
+ordonner le dictionnaire par ordre décroissant ou croissant pour récupérer le sommet avec le degré
+le plus élevé. 
