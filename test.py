@@ -127,3 +127,8 @@ for node in Graphe:
 
 print("Get degre de connexion noeud : \n", GetDegreDeConnexionNode(Graphe, 1))
 
+G = [
+        [ 0 , 1 , 1 ] ,
+        [ 1 , 0 , 1 ] ,
+        [ 1 , 1 , 0 ]
+    ]

@@ -31,12 +31,30 @@ def CreerGraphe(Liste_aretes):
 #On parcourt les voisins des sommets et on supprimer le sommet correspondant.
 #On utilise del plutôt que pop() car plus rapide
 def supprimerArete(Graphe, u,v):
-    for i in range(0,len(Graphe[u])-1):
+    print("u = ", u)
+    print("v = ", v)
+    i = 1
+    while i < len(Graphe[u]):
+    # for i in range(0,len(Graphe[u])-1):
+        print("len de u",len(Graphe[u]))
+        print("i = ",i)
+        print("Voisins de ", u, ":",Graphe[u])
+        print("Voisin comparé de u", Graphe[u][i])
         if Graphe[u][i] == v:
+            print("premier if ",Graphe[u][i])
             del Graphe[u][i]
-    for j in range(0,len(Graphe[v])-1):
+        i+=1
+    j = 0
+    while j < len(Graphe[v]):
+    # for j in range(0,len(Graphe[v])-1):
+        print("len de v",len(Graphe[v]))
+        print("j = ",j)
+        print("Voisins de ", v, ":",Graphe[v])
+        print("Voisin comparé de v", Graphe[v][j])
         if Graphe[v][j] == u:
+            print("deuxième if ",Graphe[v][j])
             del Graphe[v][j]
+        j+=1
     return Graphe
 
 def ajoutArete(Graphe, u, v):
@@ -54,34 +72,37 @@ def DegreSommet(Graphe):
     return ListeDegre
 
 def degreMax(ListeDegre):
-     """ a) create a list of the dict's keys and values; 
-         b) return the key with the max value"""  
      value = list(ListeDegre.values())
      key = list(ListeDegre.keys())
      return key[value.index(max(value))]
 
-#Parcourir chaque voisin du sommet de départ puis ajouter les arêtes manquantes entre ses voisins. 
+
 def creerClique(Graphe, u):
-    clique = [u]
+    ListeEdition = []
+    Explore = [u]
     for v in Graphe[u]:
-        clique.append(v)
-        #pour chaque voisin de u, on ajoute les arêtes entre ses voisins
-        for w in Graphe[v]:
-            if w not in Graphe[u] and w != v: 
-                print("Voisin de ", u, " : ", w)
+        Explore.append(v)
+        for w in Graphe[u]:
+            if w not in Graphe[v] and w != v:
                 Graphe = ajoutArete(Graphe, w, v)
-                print("arête ajoutée: ", w, v)
-            if w in Graphe[u] and w != v:
-                print("pas voisin de ", u, " mais de : ", v, " : ", w)
+                ListeEdition.append((w,v))
+        for w in Graphe[v]:
+            if w not in Graphe[u] and w != u:
                 Graphe = supprimerArete(Graphe, w, v)
-                print("arête supprimée: ", w, v)
-    print(clique)   
+                ListeEdition.append((w,v))
+    print("Explore : ", Explore)
+    print("Liste Edition : ", ListeEdition)
     return Graphe
 
+# Recommencer à créer une clique sans les sommets dans Explore
 
 
 Graphe = CreerGraphe(Liste_aretes)
 print("Graphe = ", Graphe)
+# Graphe = ajoutArete(Graphe, 2, 5)
+# print("Graphe après ajout = ", Graphe)
+# Graphe = supprimerArete(Graphe, 5, 4)
+# print(Graphe)
 #Graphe = supprimerArete(Graphe, 1, 2)
 #print("Nouveau Graphe après suppression ", Graphe)
 #Graphe = ajoutArete(Graphe, 1,5)
@@ -89,4 +110,5 @@ print("Graphe = ", Graphe)
 ListeDegre = DegreSommet(Graphe)
 print("Liste degrés = ", ListeDegre)
 print("Sommet avec plus grand degré : ", degreMax(ListeDegre))
-print("Clique avec voisins de 5: ", creerClique(Graphe, 5))
+degreMax = degreMax(ListeDegre)
+print("Clique avec voisins de", degreMax," : ", creerClique(Graphe, degreMax))
