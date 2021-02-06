@@ -12,7 +12,7 @@ for line in fileinput.input():
 fileinput.close()
 
 Liste_aretes=sorted(Liste_aretes)
-print("Liste des arêtes: ", Liste_aretes)
+#print("Liste des arêtes: ", Liste_aretes)
 
 #On créer un graphe à partir de la liste d'arêtes:
 def CreerGraphe(Liste_aretes):
@@ -31,7 +31,7 @@ def CreerGraphe(Liste_aretes):
 #On parcourt les voisins des sommets et on supprimer le sommet correspondant.
 #On utilise del plutôt que pop() car plus rapide
 def supprimerArete(Graphe, u,v):
-    print(Graphe)
+    #print(Graphe)
     # print("u = ", u)
     # print("v = ", v)
     i = 0
@@ -42,7 +42,7 @@ def supprimerArete(Graphe, u,v):
         # print("Voisins de ", u, ":",Graphe[u])
         # print("Voisin comparé de u", Graphe[u][i])
         if Graphe[u][i] == v:
-            print("suppression ",Graphe[u][i],u)
+            #print("suppression ",Graphe[u][i],u)
             del Graphe[u][i]
         i+=1
     j = 0
@@ -53,7 +53,7 @@ def supprimerArete(Graphe, u,v):
         # print("Voisins de ", v, ":",Graphe[v])
         # print("Voisin comparé de v", Graphe[v][j])
         if Graphe[v][j] == u:
-            print("suppression ",Graphe[v][j], v)
+            #print("suppression ",Graphe[v][j], v)
             del Graphe[v][j]
         j+=1
     return Graphe
@@ -61,10 +61,10 @@ def supprimerArete(Graphe, u,v):
 
 def ajoutArete(Graphe, u, v):
     if v not in Graphe[u]:
-        print("Ajout : (",u,v,")")
+        #print("Ajout : (",u,v,")")
         Graphe[u].append(v)
     if u not in Graphe[v]:
-        print("Ajout : (",v,u,")")
+        #print("Ajout : (",v,u,")")
         Graphe[v].append(u)
     return Graphe
 
@@ -76,27 +76,29 @@ def DegreSommet(Graphe):
     return ListeDegre
 
 def degreMax(ListeDegre):
-     value = list(ListeDegre.values())
-     key = list(ListeDegre.keys())
-     return key[value.index(max(value))]
+    value = list(ListeDegre.values())
+    key = list(ListeDegre.keys())
+    return key[value.index(max(value))]
 
 
 def creerClique(Graphe, u, ListeEdition, Explore):
     Explore.append(u)
-    for v in Graphe[u]:
+    for v in Graphe[u]:#on regarde chaque voisin de u
         Explore.append(v)
-        for w in Graphe[u]:
+        for w in Graphe[u]:#pour un voisin de u, on regarde si w n'est pas déjà un voisin de v, si non, on ajoute l'arête
             if w not in Graphe[v] and w != v:
                 Graphe = ajoutArete(Graphe, w, v)
                 ListeEdition.append((w,v))
-        for w in Graphe[v]:
+        for w in Graphe[v]:#pour un voisin de v, s'il n'est pas voisin de u, on le supprime de v
             if w not in Graphe[u] and w != u:
-                Graphe = supprimerArete(Graphe, w, v)
+                A_Supprimer = []
+                A_Supprimer.append((w,v))
+                # Graphe = supprimerArete(Graphe, w, v)
                 ListeEdition.append((w,v))
-        # for w in Graphe[v]:
-        #     if w not in Graphe[u] and w != u:
-        #         Graphe = supprimerArete(Graphe, w, v)
-        #         ListeEdition.append((w,v))
+                print(A_Supprimer)
+                for w in A_Supprimer:
+                    Graphe = supprimerArete(Graphe, w[0], w[1])
+                    print(Graphe)
     return Graphe, ListeEdition, Explore
 
 # Graphe sans les sommets dans Explore
@@ -104,7 +106,7 @@ def grapheSansClique(Graphe, ListeEdition, Explore):
     for i in Explore:
         if Graphe[i] not in Explore:
             Graphe.pop(i)
-    print("Nouveau graphe sans clique ", Graphe)
+    #print("Nouveau graphe sans clique ", Graphe)
     return Graphe, ListeEdition, Explore
 
 def UnionClique(Graphe):
@@ -149,22 +151,25 @@ def UnionClique(Graphe):
 Graphe = CreerGraphe(Liste_aretes)
 # Graphe, ListeEdition, Explore = UnionClique(Graphe)
 print("Graphe = ", Graphe)
+print("Taille Graphe = ", len(Graphe))
 ListeEdition = []
 Explore = []
 ListeDegre = {}
 maxi = None
 while len(Graphe) > 0:
     ListeDegre = DegreSommet(Graphe)
-    print("Liste degré : ", ListeDegre)
+    #print("Liste degré : ", ListeDegre)
     maxi = degreMax(ListeDegre)
-    print("maxi : ", maxi)
+    #print("maxi : ", maxi)
     Graphe, ListeEdition, Explore = creerClique(Graphe, maxi, ListeEdition, Explore)
-    print("Graphe après édition des arêtes : ", Graphe)
-    print("Liste Edition : ",ListeEdition)
+    #print("Graphe après édition des arêtes : ", Graphe)
+    #print("Liste Edition : ", ListeEdition)
     Graphe, ListeEdition, Explore = grapheSansClique(Graphe, ListeEdition, Explore)
-print("Graphe : ", Graphe)
+#print("Graphe : ", Graphe)
 print("ListeEdition ", ListeEdition)
-print("Explore ", Explore)
+print("Nombre d'éditions ", len(ListeEdition))
+print("Explore : ", Explore)
+print("Taille Explore ", len(Explore))
 
 
 
