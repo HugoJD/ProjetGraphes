@@ -32,3 +32,10 @@ Fonction UnionClique(Graphe):
 	on ne garde que les sommets et les arêtes qui ne sont pas dans la clique
 	on relance la fonction de création d'une clique avec le sommet restant qui a le plus grand degré
 
+Nombre de boucles:
+	1 pour créer le graphe
+	1 pour degretSommet après cheque création de clique
+	3 boucles dans créer clique
+	1 sur Explore pour supprimer les sommets déjà vus.
+
+
