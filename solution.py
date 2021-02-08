@@ -83,36 +83,31 @@ def degreMax(ListeDegre):
     key = list(ListeDegre.keys())
     return key[value.index(max(value))]
 
-def creerClique(Graphe,u, ListeEdition):
-    Explore=set()
-    Explore.add(u)
-    Voisins_U=set(Graphe[u])
-    for v in Voisins_U:
-        Voisins_V=set(Graphe[v])
-        if (len(Voisins_V & Voisins_U))>0 and (len(Explore - Voisins_V))==0:
-            Explore.add(v)
-    # if len(ListeClique)<2:
-    #     Voisins=list(Voisins)
-    #     ListeClique.add(Voisins[randint(0,len(Voisins)-1)])
-    return list(Explore), ListeEdition
+
 
 def creerClique(Graphe, u, ListeEdition, Explore): # à partir d'un sous graphe. 
     Explore.append(u)
+    # print("Graphe avant créer clique:", Graphe)
     # A_Supprimer = []
     for v in Graphe[u]:#on regarde chaque voisin de u
         Explore.append(v)
         for w in Graphe[u]:#pour un voisin de u, on regarde si w n'est pas déjà un voisin de v, si non, on ajoute l'arête
             if w not in Graphe[v] and w != v:
-                Graphe = ajoutArete(Graphe, w, v)
                 ListeEdition.append((w,v))
+                Graphe = ajoutArete(Graphe, w, v)
+                # print("Arête ajoutée : ", (w,v))
+                # print("Liste Edition : ",ListeEdition)
         i=0
         while i < len(Graphe[v]):
+            # print("V : ", v)
             # print("Voisins de v = ", Graphe[v])
             # print("Voisin de V exploré: ", Graphe[v][i])
             if Graphe[v][i] not in Graphe[u] and Graphe[v][i] != u:
                 # print("Voisin de V à supprimer: ", Graphe[v][i])
-                Graphe = supprimerArete(Graphe, v, Graphe[v][i])
                 ListeEdition.append((v,Graphe[v][i]))
+                Graphe = supprimerArete(Graphe, Graphe[v][i], v)
+                # print("Arête supprimée : ", (Graphe[v][i]), v)
+                # print("Liste Edition : ",ListeEdition)
                 # print("Voisins de v après suppression = ", Graphe[v])
             else:
                 # print("Voisins de v sans suppression = ", Graphe[v])
@@ -124,6 +119,7 @@ def creerClique(Graphe, u, ListeEdition, Explore): # à partir d'un sous graphe.
     #             ListeEdition.append((w,v))
     # for w in A_Supprimer:
     #     Graphe = supprimerArete(Graphe, w[0], w[1])
+    # print("Graphe après créer clique:", Graphe)
     return Graphe, ListeEdition, Explore
 
 # def clique(Graphe, u, ListeEdition, Explore): # on cherche une clique potentielle à partir d'un sommet donné.
@@ -200,7 +196,7 @@ Explore = []
 Graphe, ListeEdition, Explore = UnionClique(Graphe)
 # print(len(ListeEdition))
 for i in ListeEdition:
-    print(i)
+    print(i[0], i[1])
 # print("Nombre d'éditions ", len(ListeEdition))
 # #print("Explore : ", Explore)
 # print("Taille Explore ", len(Explore))
