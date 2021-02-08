@@ -39,3 +39,8 @@ Nombre de boucles:
 	1 sur Explore pour supprimer les sommets déjà vus.
 
 
+======================================================================================
+Autre solution:
+Chercher les sous-graphes complets à partir d'un sommet en utilisant les set() et supprimer les arêtes entre
+le sous-graphe et les sommets qui n'appartiennent pas à ce sous-graphe.
+

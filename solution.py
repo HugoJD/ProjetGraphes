@@ -2,9 +2,11 @@ import fileinput
 import time
 from collections import defaultdict, Counter
 from datetime import datetime
+from random import randint
 
 # debut = time.perf_counter()
-print("heure début: ", str(datetime.now()))
+# heure_debut = datetime.now()
+# print("heure début: ", str(heure_debut))
 #On crée une liste vide d'arêtes pour y mettre celles du fichier en entrée:
 # Liste_aretes=[]
 
@@ -32,7 +34,7 @@ fileinput.close()
 # lecture_file = time.perf_counter()
 # print(f"Lecture du fichier en {lecture_file - debut:0.2f} secondes")
 
-# #On créer un graphe à partir de la liste d'arêtes:
+#On créer un graphe à partir de la liste d'arêtes:
 # def CreerGraphe(Liste_aretes):
 #     Graphe = defaultdict(list)
 #     for u, v in Liste_aretes:
@@ -81,23 +83,63 @@ def degreMax(ListeDegre):
     key = list(ListeDegre.keys())
     return key[value.index(max(value))]
 
+def creerClique(Graphe,u, ListeEdition):
+    Explore=set()
+    Explore.add(u)
+    Voisins_U=set(Graphe[u])
+    for v in Voisins_U:
+        Voisins_V=set(Graphe[v])
+        if (len(Voisins_V & Voisins_U))>0 and (len(Explore - Voisins_V))==0:
+            Explore.add(v)
+    # if len(ListeClique)<2:
+    #     Voisins=list(Voisins)
+    #     ListeClique.add(Voisins[randint(0,len(Voisins)-1)])
+    return list(Explore), ListeEdition
 
-def creerClique(Graphe, u, ListeEdition, Explore):
+def creerClique(Graphe, u, ListeEdition, Explore): # à partir d'un sous graphe. 
     Explore.append(u)
-    A_Supprimer = []
+    # A_Supprimer = []
     for v in Graphe[u]:#on regarde chaque voisin de u
         Explore.append(v)
         for w in Graphe[u]:#pour un voisin de u, on regarde si w n'est pas déjà un voisin de v, si non, on ajoute l'arête
             if w not in Graphe[v] and w != v:
                 Graphe = ajoutArete(Graphe, w, v)
                 ListeEdition.append((w,v))
-        for w in Graphe[v]:#pour un voisin de v, s'il n'est pas voisin de u, on le supprime de v
-            if w not in Graphe[u] and w != u:
-                A_Supprimer.append((w,v))
-                ListeEdition.append((w,v))
-        for w in A_Supprimer:
-            Graphe = supprimerArete(Graphe, w[0], w[1])
+        i=0
+        while i < len(Graphe[v]):
+            # print("Voisins de v = ", Graphe[v])
+            # print("Voisin de V exploré: ", Graphe[v][i])
+            if Graphe[v][i] not in Graphe[u] and Graphe[v][i] != u:
+                # print("Voisin de V à supprimer: ", Graphe[v][i])
+                Graphe = supprimerArete(Graphe, v, Graphe[v][i])
+                ListeEdition.append((v,Graphe[v][i]))
+                # print("Voisins de v après suppression = ", Graphe[v])
+            else:
+                # print("Voisins de v sans suppression = ", Graphe[v])
+                i+=1
+
+    #     for w in Graphe[v]:#pour un voisin de v, s'il n'est pas voisin de u, on le supprime de v
+    #         if w not in Graphe[u] and w != u:
+    #             A_Supprimer.append((w,v))
+    #             ListeEdition.append((w,v))
+    # for w in A_Supprimer:
+    #     Graphe = supprimerArete(Graphe, w[0], w[1])
     return Graphe, ListeEdition, Explore
+
+# def clique(Graphe, u, ListeEdition, Explore): # on cherche une clique potentielle à partir d'un sommet donné.
+#     Explore.append(u)
+#     print("Graphe au début de la fonction clique : ", Graphe)
+#     for v in set(Graphe[u]):#on regarde chaque voisin de u
+#         Explore.append(v)
+#         #on cherche si u et v ont des voisins en commun
+#         voisins_communs = set(set(Graphe[u]) & set(Graphe[v]))
+#         if len(voisins_communs) > 0:
+#             for w in Graphe[v]:
+#                 if w not in voisins_communs:
+#                     Graphe = supprimerArete(Graphe, w,v)
+#                     ListeEdition.append((w,v)) 
+#     print("Graphe après la fonction clique", Graphe)             
+#     return Graphe, ListeEdition, Explore
 
 # Graphe sans les sommets dans Explore
 def grapheSansClique(Graphe, ListeEdition, Explore):
@@ -130,11 +172,13 @@ def UnionClique(Graphe):
 # print("Graphe = ", Graphe)
 # toc = time.perf_counter()
 # print(f"Création du graphe en {toc - tic:0.2f} secondes")
-print("Taille Graphe = ", len(Graphe))
+# print("Taille Graphe = ", len(Graphe))
 # print(Graphe)
 # tic_algo = time.perf_counter()
-# ListeEdition = []
-# Explore = []
+ListeEdition = []
+Explore = []
+# for u in Graphe:
+#     Graphe, ListeEdition, Explore = clique(Graphe,u ,ListeEdition, Explore)
 # ListeDegre = {}
 # maxi = None
 # while len(Graphe) > 0:
@@ -154,10 +198,13 @@ print("Taille Graphe = ", len(Graphe))
 # print("Graphe : ", Graphe)
 #print("ListeEdition ", ListeEdition)
 Graphe, ListeEdition, Explore = UnionClique(Graphe)
-print("Nombre d'éditions ", len(ListeEdition))
-#print("Explore : ", Explore)
-print("Taille Explore ", len(Explore))
-print("heure fin: ", str(datetime.now()))
+print(len(ListeEdition))
+# print("Nombre d'éditions ", len(ListeEdition))
+# #print("Explore : ", Explore)
+# print("Taille Explore ", len(Explore))
+# heure_fin = datetime.now()
+# print("heure fin: ", str(heure_fin))
+# print("Temps total algo: ", str(heure_fin - heure_debut))
 #toc_algo = time.perf_counter()
 #print(f"Création d'une union de clique en {toc_algo - tic_algo:0.2f} secondes")
 # print(f"Temps total: {toc_algo - debut:0.2f} secondes")

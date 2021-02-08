@@ -1,6 +1,7 @@
 import fileinput
 from collections import defaultdict, Counter
 import networkx as nx
+import math
 
 #Commande pour importer le fichier contenant le graphe dans la console:
 #cat .\komu.gr | python .\test.py
@@ -136,6 +137,7 @@ G = [
 import fileinput
 import time
 from collections import defaultdict, Counter
+from random import randint
 
 # debut = time.perf_counter()
 
@@ -326,3 +328,15 @@ print("Taille Explore ", len(Explore))
 # print(f"Temps total: {toc_algo - debut:0.2f} secondes")
 
 
+def FindCliqueSup(Graph,u):
+    ListeClique=set()
+    ListeClique.add(u)
+    Voisins=set(Graph[u])
+    for v in Voisins:
+        VoisinsDuVoisin=set(Graph[v])
+        if (len(VoisinsDuVoisin & Voisins))>0 and (len(ListeClique - VoisinsDuVoisin))==0:
+            ListeClique.add(v)
+    # if len(ListeClique)<2:
+    #     Voisins=list(Voisins)
+    #     ListeClique.add(Voisins[randint(0,len(Voisins)-1)])
+    return list(ListeClique)
