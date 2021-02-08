@@ -198,7 +198,7 @@ Explore = []
 # print("Graphe : ", Graphe)
 #print("ListeEdition ", ListeEdition)
 Graphe, ListeEdition, Explore = UnionClique(Graphe)
-print(len(ListeEdition))
+print(ListeEdition)
 # print("Nombre d'éditions ", len(ListeEdition))
 # #print("Explore : ", Explore)
 # print("Taille Explore ", len(Explore))
