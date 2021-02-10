@@ -11,7 +11,11 @@ DESCRIPTION
 	edges (add or deleting) so that from an undated, unweighted graph with 
 	edges between certain vertices (2 vertices are considered "similar" if they 
 	have an edge between them, "not similar" otherwise), the result is a 
-	cluster graph, i.e. a collection of cliques
+	cluster graph, i.e. a collection of cliques.
+	The main idea of our algorithm is to choose the vertice of the highest degree 
+	and form a clique bringing together top as well as all its neighbors. 
+	We then remove the edges involved in the created clique, and renew the process, 
+	until all the commits of the original graph belong to a clique.
 
 FUNCTIONS
     DegreSommet(Graphe)
