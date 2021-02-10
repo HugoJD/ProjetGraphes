@@ -1,0 +1,48 @@
+% python
+...
+
+heure début:  2021-02-10 21:18:54.070804
+Taille Graphe =  0
+Nombre d'éditions  0
+Taille Explore  0
+heure fin:  2021-02-10 21:18:54.092070
+
+Help on module ShaikhJolion
+
+NAME
+    solution
+
+DESCRIPTION
+	ShaikhJolion.py is an algorithm that consists of modifying the minimum of 
+	edges (add or deleting) so that from an undated, unweighted graph with 
+	edges between certain peaks (2 peaks are considered "similar" if they 
+	have an edge between them, "not similar" otherwise), the result is a 
+	cluster graph, i.e. a collection of clicks
+
+FUNCTIONS
+    DegreSommet(Graphe)
+        Function that gives the list of vertices with their degree
+
+    UnionClique(Graphe)
+	Function of changing the minimum of edges and having 
+	a set of clicks from an undirected, unweighted graph
+
+    ajoutArete(Graphe, u, v)
+	Function to add an edge between two given peaks
+
+    creerClique(Graphe, u, ListeEdition, Explore)
+	Feature to create a click from a given vertice
+
+    degreMax(ListeDegre)
+	Function to have the vertice with the greatest degree
+
+    grapheSansClique(Graphe, ListeEdition, Explore)
+        Function that removes all the vertices belonging to 
+	a click from a given graph in settings (list Explore)
+
+    supprimerArete(Graphe, u, v)
+    ListeEdition = []
+    line = '\n'
+
+FILE
+    c:\users\anamn\projetgraphes\projetgraphes\solution.py
