@@ -79,14 +79,11 @@ def UnionClique(Graphe):
     maxi = None
     while len(Graphe) != 0:
         if killer.exit_now:
-            for i in ListeEdition:
-                print(i[0], i[1])
             break
         ListeDegre = DegreSommet(Graphe)
         maxi = degreMax(ListeDegre)
         Graphe, ListeEdition, Explore = creerClique(Graphe, maxi, ListeEdition, Explore)
         Graphe, ListeEdition, Explore = grapheSansClique(Graphe, ListeEdition, Explore)
-        i+=1
     return Graphe, ListeEdition, Explore
 
 #Début du programme
