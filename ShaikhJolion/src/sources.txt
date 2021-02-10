@@ -1,0 +1,3 @@
+https://mrmint.fr/algorithme-k-means
+https://fr.m.wikipedia.org/wiki/K-moyennes
+https://en.wikipedia.org/wiki/Cluster_graph
