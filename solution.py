@@ -1,4 +1,5 @@
 import fileinput
+import signal
 import time
 from collections import defaultdict, Counter
 from datetime import datetime
@@ -14,6 +15,19 @@ from random import randint
 #     if line[0].isdigit():
 #         line=line.split()
 #         Liste_aretes.append((int(line[0]),int(line[1])))
+
+
+
+class Killer:
+  exit_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit)
+    signal.signal(signal.SIGTERM, self.exit)
+
+  def exit(self,signum, frame):
+    self.exit_now = True
+
+killer = Killer()
 
 Graphe = defaultdict(list)
 for line in fileinput.input():
@@ -151,6 +165,10 @@ def UnionClique(Graphe):
     ListeDegre = {}
     maxi = None
     while len(Graphe) != 0:
+        if killer.exit_now:
+            for i in ListeEdition:
+                print(i[0], i[1])
+            break
         ListeDegre = DegreSommet(Graphe)
         maxi = degreMax(ListeDegre)
         Graphe, ListeEdition, Explore = creerClique(Graphe, maxi, ListeEdition, Explore)
